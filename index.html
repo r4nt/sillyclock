@@ -1,7 +1,10 @@
-<head>
+<html><head>
     <title>Test</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
     <style>
+        * {
+            background-color: black;
+        }
         #clock {
             display: block;
             margin-left: auto;
@@ -13,22 +16,39 @@
             const params = new URLSearchParams(location.search);
             const settings = {
                 size: params.get("size"),
-                background: params.get("background"),
             };
             $("#clock").prop("width", settings.size);
             $("#clock").prop("height", settings.size);
-            $("#clock").prop("style", "background-color: #00ff00");
+            $("#clock").prop("style", "background-color: #000000");
 
             const radius = settings.size/2;
             const ctx = document.getElementById("clock").getContext("2d");
             ctx.translate(radius, radius);
             ctx.beginPath()
             ctx.arc(0, 0, radius, 0, Math.PI*2);
-            ctx.stroke();
-            console.log("here" + settings.size);
+            ctx.fillStyle = "green";
+            ctx.fill();
+            const fontSize = radius * 0.15;
+            ctx.font = "" + fontSize + "px Arial";
+            for (var t=1; t<=12; t++) {
+                const text = t.toString();
+                const metrics = ctx.measureText(text);
+                const textWidth = metrics.width;
+                const textHeight = metrics.actualBoundingBoxAscent + metrics.actualBoundingBoxDescent;
+                console.log(textHeight + "\n");
+                ctx.strokeText(text, 
+                Math.sin(t*Math.PI/6)*radius*0.85
+                -textWidth/2
+                , 
+                -Math.cos(t*Math.PI/6)*radius*0.85
+                +textHeight/2
+                );
+
+            }
         }
     </script>
 </head>
 <body onload="init()">
     <canvas id="clock"></canvas>
 </body>
+</html>

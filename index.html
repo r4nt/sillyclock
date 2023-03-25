@@ -1,0 +1,34 @@
+<head>
+    <title>Test</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <style>
+        #clock {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+    </style>
+    <script>
+        function init() {
+            const params = new URLSearchParams(location.search);
+            const settings = {
+                size: params.get("size"),
+                background: params.get("background"),
+            };
+            $("#clock").prop("width", settings.size);
+            $("#clock").prop("height", settings.size);
+            $("#clock").prop("style", "background-color: #00ff00");
+
+            const radius = settings.size/2;
+            const ctx = document.getElementById("clock").getContext("2d");
+            ctx.translate(radius, radius);
+            ctx.beginPath()
+            ctx.arc(0, 0, radius, 0, Math.PI*2);
+            ctx.stroke();
+            console.log("here" + settings.size);
+        }
+    </script>
+</head>
+<body onload="init()">
+    <canvas id="clock"></canvas>
+</body>
